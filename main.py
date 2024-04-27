@@ -151,11 +151,7 @@ def capture(queueIn):
     fps = cap.get(cv2.CAP_PROP_FPS)
     num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
-
-    if not cap.isOpened():
-        print("File not opened")
-        sys.exit(1)
-
+    
     while True:
         ret, frame = cap.read()
 
