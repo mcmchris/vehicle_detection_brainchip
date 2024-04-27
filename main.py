@@ -124,8 +124,30 @@ def fill_result_struct_f32_fomo(data, out_width, out_height):
     return result
 
 
+def get_webcams():
+    port_ids = []
+    for port in range(5):
+        print("Looking for a camera in port %s:" %port)
+        camera = cv2.VideoCapture(port)
+        if camera.isOpened():
+            ret = camera.read()[0]
+            if ret:
+                backendName =camera.getBackendName()
+                w = camera.get(3)
+                h = camera.get(4)
+                print("Camera %s (%s x %s) found in port %s " %(backendName,h,w, port))
+                port_ids.append(port)
+            camera.release()
+    return port_ids
+
 def capture(queueIn):
-    cap = cv2.VideoCapture(0)
+
+    port_ids = get_webcams()
+    if len(port_ids) == 0:
+        raise Exception('Cannot find any webcams')
+    videoCaptureDeviceId = int(port_ids[0])
+
+    cap = cv2.VideoCapture(videoCaptureDeviceId)
     fps = cap.get(cv2.CAP_PROP_FPS)
     num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
