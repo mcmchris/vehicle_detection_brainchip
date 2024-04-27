@@ -240,7 +240,7 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    video_file = './video/aerial_1280_1280.avi'
+    video_file = './video/video.mp4'
     model_file = './model/ei-object-detection-metatf-model.fbz'
 
     queueIn  = Queue(maxsize = 24)
