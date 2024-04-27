@@ -124,8 +124,8 @@ def fill_result_struct_f32_fomo(data, out_width, out_height):
     return result
 
 
-def capture(video_file, queueIn):
-    cap = cv2.VideoCapture(video_file)
+def capture(queueIn):
+    cap = cv2.VideoCapture(0)
     fps = cap.get(cv2.CAP_PROP_FPS)
     num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
@@ -240,13 +240,13 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    video_file = './video/video.mp4'
+    #video_file = './video/video.mp4'
     model_file = './model/ei-object-detection-metatf-model.fbz'
 
     queueIn  = Queue(maxsize = 24)
     queueOut = Queue(maxsize = 24)
 
-    t1 = threading.Thread(target=capture, args=(video_file, queueIn))
+    t1 = threading.Thread(target=capture, args=(queueIn))
     t1.start()
     t2 = threading.Thread(target=inferencing, args=(model_file, queueIn, queueOut))
     t2.start()
