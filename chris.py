@@ -163,8 +163,8 @@ def inferencing(model_file, queueOut):
     o_h, o_w, o_c = akida_model.output_shape
     scale_x = int(i_w/o_w)
     scale_y = int(i_h/o_h)
-    scale_out_x = 640/EI_CLASSIFIER_INPUT_WIDTH
-    scale_out_y = 480/EI_CLASSIFIER_INPUT_HEIGHT
+    scale_out_x = 224/EI_CLASSIFIER_INPUT_WIDTH
+    scale_out_y = 224/EI_CLASSIFIER_INPUT_HEIGHT
 
     global inference_speed
     global power_consumption
