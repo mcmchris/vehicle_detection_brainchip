@@ -157,8 +157,8 @@ def inferencing(model_file, queueOut):
         if ret:
             #cropped_img = frame[0:720, 280:280+720]
             #resized_img = cv2.resize(frame, resize_dim, interpolation = cv2.INTER_AREA)
-            #resized_img = cv2.resize(frame, resize_dim)
-            img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            resized_img = cv2.resize(frame, resize_dim)
+            img = cv2.cvtColor(resized_img, cv2.COLOR_BGR2RGB)
             input_data = np.expand_dims(img, axis=0)
             
             start_time = time.perf_counter()
@@ -194,12 +194,14 @@ def inferencing(model_file, queueOut):
         
 
 def gen_frames():
+    resize_stream = (480, 640)
     while True:
         if queueOut.empty():
             time.sleep(0.01)
             continue
         img = queueOut.get()
-        ret, buffer = cv2.imencode('.jpg', img)
+        resized_img = cv2.resize(img, resize_stream)
+        ret, buffer = cv2.imencode('.jpg', resized_img)
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
     
