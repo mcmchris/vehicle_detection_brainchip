@@ -124,33 +124,6 @@ def fill_result_struct_f32_fomo(data, out_width, out_height):
     return result
 
 
-
-
-def capture(video_file, queueIn):
-    cap = cv2.VideoCapture(video_file)
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
-    resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
-
-    if not cap.isOpened():
-        print("File not opened")
-        sys.exit(1)
-
-    while True:
-        ret, frame = cap.read()
-
-        if ret:
-            #cropped_img = frame[0:720, 280:280+720]
-            #resized_img = cv2.resize(frame, resize_dim, interpolation = cv2.INTER_AREA)
-            resized_img = cv2.resize(frame, resize_dim)
-            img = cv2.cvtColor(resized_img, cv2.COLOR_BGR2RGB)
-            input_data = np.expand_dims(img, axis=0)
-            if not queueIn.full():
-                queueIn.put((frame, input_data))
-        else:
-            return
-
-
 def inferencing(model_file, queueOut):
     akida_model = akida.Model(model_file)
     devices = akida.devices()
@@ -184,8 +157,8 @@ def inferencing(model_file, queueOut):
         if ret:
             #cropped_img = frame[0:720, 280:280+720]
             #resized_img = cv2.resize(frame, resize_dim, interpolation = cv2.INTER_AREA)
-            resized_img = cv2.resize(frame, resize_dim)
-            img = cv2.cvtColor(resized_img, cv2.COLOR_BGR2RGB)
+            #resized_img = cv2.resize(frame, resize_dim)
+            img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             input_data = np.expand_dims(img, axis=0)
             
             start_time = time.perf_counter()
