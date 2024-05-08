@@ -151,7 +151,7 @@ def capture(video_file, queueIn):
             return
 
 
-def inferencing(model_file, queueIn, queueOut):
+def inferencing(model_file, queueOut):
     akida_model = akida.Model(model_file)
     devices = akida.devices()
     print(f'Available devices: {[dev.desc for dev in devices]}')
@@ -163,8 +163,8 @@ def inferencing(model_file, queueIn, queueOut):
     o_h, o_w, o_c = akida_model.output_shape
     scale_x = int(i_w/o_w)
     scale_y = int(i_h/o_h)
-    scale_out_x = 1920/EI_CLASSIFIER_INPUT_WIDTH
-    scale_out_y = 1080/EI_CLASSIFIER_INPUT_HEIGHT
+    scale_out_x = 640/EI_CLASSIFIER_INPUT_WIDTH
+    scale_out_y = 480/EI_CLASSIFIER_INPUT_HEIGHT
 
     global inference_speed
     global power_consumption
@@ -204,7 +204,7 @@ def inferencing(model_file, queueIn, queueOut):
             power_consumption = f'{(active_power/len(power_events)) - floor_power : 0.2f}' 
             #print(akida_model.statistics)
 
-            result = fill_result_struct_f32_fomo(pred, int(EI_CLASSIFIER_INPUT_WIDTH/4), int(EI_CLASSIFIER_INPUT_HEIGHT/4))
+            result = fill_result_struct_f32_fomo(pred, int(EI_CLASSIFIER_INPUT_WIDTH/8), int(EI_CLASSIFIER_INPUT_HEIGHT/8))
 
             for bb in result['bounding_boxes']:
                 img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] + int(bb['height']/2)) * scale_out_y)), 14, (57, 255, 20), 3)
@@ -264,10 +264,7 @@ if __name__ == '__main__':
     queueIn  = Queue(maxsize = 24)
     queueOut = Queue(maxsize = 24)
 
-    t1 = threading.Thread(target=capture, args=(video_file, queueIn))
-    t1.start()
-    t2 = threading.Thread(target=inferencing, args=(model_file, queueIn, queueOut))
+    t2 = threading.Thread(target=inferencing, args=(model_file,queueOut))
     t2.start()
     app.run(host = '0.0.0.0', port = 8080)
-    t1.join()
     t2.join()
