@@ -126,23 +126,15 @@ def fill_result_struct_f32_fomo(data, out_width, out_height):
 
 
 
-def capture(queueIn):
-
-    videoCaptureDeviceId = int(2)
-    cap = cv2.VideoCapture(videoCaptureDeviceId)
-    ret = cap.read()[0]
-    if ret:
-        backendName = cap.getBackendName()
-        w = cap.get(3)
-        h = cap.get(4)
-        print("Camera %s (%s x %s) in port %s selected." %(backendName,h,w, videoCaptureDeviceId))
-        cap.release()
-    else:
-        raise Exception("Couldn't initialize selected camera.")
-    
+def capture(video_file, queueIn):
+    cap = cv2.VideoCapture(video_file)
     fps = cap.get(cv2.CAP_PROP_FPS)
     num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
+
+    if not cap.isOpened():
+        print("File not opened")
+        sys.exit(1)
 
     while True:
         ret, frame = cap.read()
