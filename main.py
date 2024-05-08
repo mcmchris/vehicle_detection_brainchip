@@ -242,13 +242,13 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    #video_file = './video/video.mp4'
+    video_file = './video/video.mp4'
     model_file = './model/ei-object-detection-metatf-model.fbz'
 
     queueIn  = Queue(maxsize = 24)
     queueOut = Queue(maxsize = 24)
 
-    t1 = threading.Thread(target=capture, args=(queueIn))
+    t1 = threading.Thread(target=capture, args=(video_file, queueIn))
     t1.start()
     t2 = threading.Thread(target=inferencing, args=(model_file, queueIn, queueOut))
     t2.start()
