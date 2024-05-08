@@ -194,7 +194,7 @@ def inferencing(model_file, queueOut):
         
 
 def gen_frames():
-    resize_stream = (480, 640)
+    resize_stream = (640, 480)
     while True:
         if queueOut.empty():
             time.sleep(0.01)
