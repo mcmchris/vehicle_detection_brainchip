@@ -143,6 +143,16 @@ def inferencing(model_file, queueOut):
     global power_consumption
 
     cap = cv2.VideoCapture(8)
+    if cap.isOpened():
+        ret = cap.read()[0]
+        if ret:
+            backendName =cap.getBackendName()
+            w = cap.get(3)
+            h = cap.get(4)
+            print("Camera %s (%s x %s) " %(backendName,h,w))
+            
+        cap.release()
+        
     fps = cap.get(cv2.CAP_PROP_FPS)
     num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
@@ -186,7 +196,7 @@ def inferencing(model_file, queueOut):
             img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
             if not queueOut.full():
-                queueOut.put(frame)
+                queueOut.put(img)
         else:
             return
         
@@ -194,14 +204,14 @@ def inferencing(model_file, queueOut):
         
 
 def gen_frames():
-    #resize_stream = (640, 480)
+    resize_stream = (640, 480)
     while True:
         if queueOut.empty():
             time.sleep(0.01)
             continue
         img = queueOut.get()
-        #resized_img = cv2.resize(img, resize_stream)
-        ret, buffer = cv2.imencode('.jpg', img)
+        resized_img = cv2.resize(img, resize_stream)
+        ret, buffer = cv2.imencode('.jpg', resized_img)
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
     
