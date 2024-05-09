@@ -150,14 +150,14 @@ def inferencing(model_file, queueOut):
             backendName =cap.getBackendName()
             w = cap.get(3)
             h = cap.get(4)
-            print("Camera %s (%s x %s) " %(backendName,h,w))      
-        cap.release()
+            fps = cap.get(cv2.CAP_PROP_FPS)
+            num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
+            print("Camera %s (%s x %s), FPS: %s, Frames: %s " %(backendName,h,w,fps,num_frames))      
+        #cap.release()
     else:
         print("Camera not opened properly")
         sys.exit(1)
         
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
 
     while True:
