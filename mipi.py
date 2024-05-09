@@ -162,45 +162,43 @@ def inferencing(model_file, queueOut):
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
 
     while True:
-        ret, frame = picam2.capture_array("lores")
+        frame = picam2.capture_array("lores")
 
-        if ret:
-            #cropped_img = frame[0:720, 280:280+720]
-            #resized_img = cv2.resize(frame, resize_dim, interpolation = cv2.INTER_AREA)
-            #grey = frame[:stride * lowresSize[1]].reshape((lowresSize[1], stride))
-            
-            resized_img = cv2.resize(frame, resize_dim)
-            img = cv2.cvtColor(resized_img, cv2.COLOR_YUV420p2RGB)
-            input_data = np.expand_dims(img, axis=0)
-            
-            start_time = time.perf_counter()
-            logits = akida_model.predict(input_data)
-            end_time = time.perf_counter()
-            inference_speed = (end_time - start_time) * 1000
-
-            pred = softmax(logits, axis=-1).squeeze()
-
-            floor_power = device.soc.power_meter.floor
-            power_events = device.soc.power_meter.events()
-            active_power = 0
-            for event in power_events:
-                active_power += event.power
+        #cropped_img = frame[0:720, 280:280+720]
+        #resized_img = cv2.resize(frame, resize_dim, interpolation = cv2.INTER_AREA)
+        #grey = frame[:stride * lowresSize[1]].reshape((lowresSize[1], stride))
         
-            power_consumption = f'{(active_power/len(power_events)) - floor_power : 0.2f}' 
-            #print(akida_model.statistics)
+        resized_img = cv2.resize(frame, resize_dim)
+        img = cv2.cvtColor(resized_img, cv2.COLOR_YUV420p2RGB)
+        input_data = np.expand_dims(img, axis=0)
+        
+        start_time = time.perf_counter()
+        logits = akida_model.predict(input_data)
+        end_time = time.perf_counter()
+        inference_speed = (end_time - start_time) * 1000
 
-            result = fill_result_struct_f32_fomo(pred, int(EI_CLASSIFIER_INPUT_WIDTH/8), int(EI_CLASSIFIER_INPUT_HEIGHT/8))
+        pred = softmax(logits, axis=-1).squeeze()
 
-            for bb in result['bounding_boxes']:
-                img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] + int(bb['height']/2)) * scale_out_y)), 8, (57, 255, 20), 2)
-                img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] +  int(bb['height']/2)) * scale_out_y)), 4, (255, 165, 0), 2)
+        floor_power = device.soc.power_meter.floor
+        power_events = device.soc.power_meter.events()
+        active_power = 0
+        for event in power_events:
+            active_power += event.power
+    
+        power_consumption = f'{(active_power/len(power_events)) - floor_power : 0.2f}' 
+        #print(akida_model.statistics)
 
-            img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        result = fill_result_struct_f32_fomo(pred, int(EI_CLASSIFIER_INPUT_WIDTH/8), int(EI_CLASSIFIER_INPUT_HEIGHT/8))
 
-            if not queueOut.full():
-                queueOut.put(frame)
-        else:
-            return
+        for bb in result['bounding_boxes']:
+            img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] + int(bb['height']/2)) * scale_out_y)), 8, (57, 255, 20), 2)
+            img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] +  int(bb['height']/2)) * scale_out_y)), 4, (255, 165, 0), 2)
+
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+        if not queueOut.full():
+            queueOut.put(frame)
+
         
         
         
