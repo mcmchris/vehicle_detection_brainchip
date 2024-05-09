@@ -12,12 +12,12 @@ from flask import Flask, render_template, Response
 from picamera2 import MappedArray, Picamera2, Preview
 
 normalSize = (1920 , 1080)
-lowresSize = (224, 224)
+lowresSize = (160, 160)
 
 app = Flask(__name__, static_folder='templates/assets')
         
-EI_CLASSIFIER_INPUT_WIDTH  = 224
-EI_CLASSIFIER_INPUT_HEIGHT = 224
+EI_CLASSIFIER_INPUT_WIDTH  = 160
+EI_CLASSIFIER_INPUT_HEIGHT = 160
 EI_CLASSIFIER_LABEL_COUNT = 3
 EI_CLASSIFIER_OBJECT_DETECTION_THRESHOLD = 0.95
 categories = ['Lamp','Plant','Unknown']
