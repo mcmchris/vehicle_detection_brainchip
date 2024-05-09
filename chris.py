@@ -143,7 +143,7 @@ def inferencing(model_file, queueOut):
     global inference_speed
     global power_consumption
 
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(8)
     if cap.isOpened():
         ret = cap.read()[0]
         if ret:
