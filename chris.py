@@ -186,7 +186,7 @@ def inferencing(model_file, queueOut):
             img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
             if not queueOut.full():
-                queueOut.put(img)
+                queueOut.put(frame)
         else:
             return
         
