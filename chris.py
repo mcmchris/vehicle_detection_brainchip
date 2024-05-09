@@ -143,13 +143,13 @@ def inferencing(model_file, queueOut):
     global inference_speed
     global power_consumption
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(2)
     if cap.isOpened():
         ret = cap.read()[0]
         if ret:
             backendName =cap.getBackendName()
-            cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+            #cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+            #cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
             w = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
             h = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
             fps = cap.get(cv2.CAP_PROP_FPS)
