@@ -196,7 +196,7 @@ def inferencing(model_file, queueOut):
             img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] +  int(bb['height']/2)) * scale_out_y)), 4, (255, 165, 0), 2)
 
         #img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-
+        
         if not queueOut.full():
             queueOut.put(img)
 
@@ -242,7 +242,6 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    video_file = './video/video.mp4'
     model_file = './model/ei-object-detection-metatf-model.fbz'
 
     queueOut = Queue(maxsize = 24)
