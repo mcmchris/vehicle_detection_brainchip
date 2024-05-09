@@ -14,7 +14,7 @@ app = Flask(__name__, static_folder='templates/assets')
 EI_CLASSIFIER_INPUT_WIDTH  = 224
 EI_CLASSIFIER_INPUT_HEIGHT = 224
 EI_CLASSIFIER_LABEL_COUNT = 1
-EI_CLASSIFIER_OBJECT_DETECTION_THRESHOLD = 0.98
+EI_CLASSIFIER_OBJECT_DETECTION_THRESHOLD = 1.0
 categories = ['Vehicle']
 inference_speed = 0
 power_consumption = 0
