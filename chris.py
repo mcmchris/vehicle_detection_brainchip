@@ -66,8 +66,8 @@ def ei_handle_cube(cubes, x, y, vf, label, detection_threshold):
         cube = {}
         cube['x'] = x
         cube['y'] = y
-        cube['width'] = 0
-        cube['height'] = 0
+        cube['width'] = 1
+        cube['height'] = 1
         cube['confidence'] = vf
         cube['label'] = label
         cubes.append(cube)
@@ -177,7 +177,7 @@ def inferencing(model_file, queueOut):
             power_consumption = f'{(active_power/len(power_events)) - floor_power : 0.2f}' 
             #print(akida_model.statistics)
 
-            result = fill_result_struct_f32_fomo(pred, int(EI_CLASSIFIER_INPUT_WIDTH/8), int(EI_CLASSIFIER_INPUT_HEIGHT/8))
+            result = fill_result_struct_f32_fomo(pred, int(640/8), int(480/8))
 
             for bb in result['bounding_boxes']:
                 img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] + int(bb['height']/2)) * scale_out_y)), 14, (57, 255, 20), 3)
