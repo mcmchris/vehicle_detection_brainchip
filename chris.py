@@ -4,6 +4,7 @@ import math
 import time
 import signal
 import threading
+import sys
 import numpy as np
 from queue import Queue
 from scipy.special import softmax
@@ -149,17 +150,15 @@ def inferencing(model_file, queueOut):
             backendName =cap.getBackendName()
             w = cap.get(3)
             h = cap.get(4)
-            print("Camera %s (%s x %s) " %(backendName,h,w))
-            
+            print("Camera %s (%s x %s) " %(backendName,h,w))      
         cap.release()
+    else:
+        print("Camera not opened properly")
+        sys.exit(1)
         
     fps = cap.get(cv2.CAP_PROP_FPS)
     num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
-
-    if not cap.isOpened():
-        print("File not opened")
-        sys.exit(1)
 
     while True:
         ret, frame = cap.read()
