@@ -141,8 +141,8 @@ def inferencing(model_file, queueOut):
     o_h, o_w, o_c = akida_model.output_shape
     scale_x = int(i_w/o_w)
     scale_y = int(i_h/o_h)
-    scale_out_x = 224/EI_CLASSIFIER_INPUT_WIDTH
-    scale_out_y = 224/EI_CLASSIFIER_INPUT_HEIGHT
+    scale_out_x = 1920/EI_CLASSIFIER_INPUT_WIDTH
+    scale_out_y = 1080/EI_CLASSIFIER_INPUT_HEIGHT
 
     global inference_speed
     global power_consumption
@@ -150,7 +150,7 @@ def inferencing(model_file, queueOut):
     picam2 = Picamera2()
     picam2.start_preview(Preview.DRM, x=0, y=0, width=1920, height=1080)
     config = picam2.create_preview_configuration(main={"size": normalSize},
-                                                 lores={"size": lowresSize, "format": "YUV420"})
+                                                 lores={"size": normalSize, "format": "YUV420"})
     picam2.configure(config)
 
     stride = picam2.stream_configuration("lores")["stride"]
