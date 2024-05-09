@@ -252,5 +252,5 @@ if __name__ == '__main__':
 
     t2 = threading.Thread(target=inferencing, args=(model_file,queueOut))
     t2.start()
-    app.run(host = '0.0.0.0', port = 8080, debug=True)
+    app.run(host = '0.0.0.0', port = 8080)
     t2.join()
