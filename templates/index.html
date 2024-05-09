@@ -22,15 +22,16 @@
 	    <span>Demo</span>
 	  </p>
     <div class="row">
-      <div class="col-lg-6"> 
-        <img class="img-fluid" src="{{ url_for('video_feed') }}" class="border rounded-3 mb-4" alt="Video feed" loading="lazy">
-      </div>
       <div class="col-lg-6">
           <p class="h4">Inference speed: <span id="inference_speed"></span> ms</p>
           <p class="h4">Power Consumption: <span id="power_consumption"></span> mW</p>
       </div>
     </div>
   </div>
+
+<body class = "container">
+    <img src="{{ url_for('video_feed') }}">
+</body>
 
   <script type="text/javascript">
   	var sourceInference = new EventSource("/model_inference_speed");

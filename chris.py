@@ -154,7 +154,7 @@ def inferencing(model_file, queueOut):
             h = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
             fps = cap.get(cv2.CAP_PROP_FPS)
             num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
-            print("Camera %s (%s x %s), FPS: %s, Frames: %s " %(backendName,h,w,fps,num_frames))      
+            print("Camera %s (%s x %s), FPS: %s, Frames: %s " %(backendName,w,h,fps,num_frames))      
         #cap.release()
     else:
         print("Camera not opened properly")
