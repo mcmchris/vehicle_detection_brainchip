@@ -194,14 +194,14 @@ def inferencing(model_file, queueOut):
         
 
 def gen_frames():
-    resize_stream = (640, 480)
+    #resize_stream = (640, 480)
     while True:
         if queueOut.empty():
             time.sleep(0.01)
             continue
         img = queueOut.get()
-        resized_img = cv2.resize(img, resize_stream)
-        ret, buffer = cv2.imencode('.jpg', resized_img)
+        #resized_img = cv2.resize(img, resize_stream)
+        ret, buffer = cv2.imencode('.jpg', img)
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
     
