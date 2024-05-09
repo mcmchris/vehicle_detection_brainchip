@@ -11,7 +11,7 @@ from scipy.special import softmax
 from flask import Flask, render_template, Response
 from picamera2 import MappedArray, Picamera2, Preview
 
-normalSize = (1920, 1080)
+normalSize = (640 , 480)
 lowresSize = (224, 224)
 
 app = Flask(__name__, static_folder='templates/assets')
@@ -148,7 +148,7 @@ def inferencing(model_file, queueOut):
     global power_consumption
 
     picam2 = Picamera2()
-    picam2.start_preview(Preview.DRM, x=0, y=0, width=1920, height=1080)
+    picam2.start_preview(Preview.DRM, x=0, y=0, width=640, height=480)
     config = picam2.create_preview_configuration(main={"size": normalSize},
                                                  lores={"size": lowresSize, "format": "YUV420"})
     picam2.configure(config)
@@ -166,12 +166,12 @@ def inferencing(model_file, queueOut):
 
         #cropped_img = frame[0:720, 280:280+720]
         #resized_img = cv2.resize(frame, resize_dim, interpolation = cv2.INTER_AREA)
-        grey = frame[:stride * lowresSize[1]].reshape((lowresSize[1], stride))
-        #img = cv2.cvtColor(frame, cv2.COLOR_YUV420p2RGB)
+        #grey = frame[:stride * lowresSize[1]].reshape((lowresSize[1], stride))
+        img = cv2.cvtColor(frame, cv2.COLOR_YUV420p2RGB)
 
-        #resized_img = cv2.resize(img, resize_dim)
+        resized_img = cv2.resize(img, resize_dim)
         
-        input_data = np.expand_dims(grey, axis=0)
+        input_data = np.expand_dims(resized_img, axis=0)
         
         start_time = time.perf_counter()
         logits = akida_model.predict(input_data)
