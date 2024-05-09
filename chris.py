@@ -66,8 +66,8 @@ def ei_handle_cube(cubes, x, y, vf, label, detection_threshold):
         cube = {}
         cube['x'] = x
         cube['y'] = y
-        cube['width'] = 5
-        cube['height'] = 5
+        cube['width'] = 0
+        cube['height'] = 0
         cube['confidence'] = vf
         cube['label'] = label
         cubes.append(cube)
