@@ -148,8 +148,10 @@ def inferencing(model_file, queueOut):
         ret = cap.read()[0]
         if ret:
             backendName =cap.getBackendName()
-            w = cap.get(3)
-            h = cap.get(4)
+            cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+            w = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+            h = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
             fps = cap.get(cv2.CAP_PROP_FPS)
             num_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
             print("Camera %s (%s x %s), FPS: %s, Frames: %s " %(backendName,h,w,fps,num_frames))      
