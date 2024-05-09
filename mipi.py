@@ -162,7 +162,7 @@ def inferencing(model_file, queueOut):
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
 
     while True:
-        frame = picam2.capture_buffer("lores")
+        frame = picam2.capture_array("lores")
 
         #cropped_img = frame[0:720, 280:280+720]
         #resized_img = cv2.resize(frame, resize_dim, interpolation = cv2.INTER_AREA)
