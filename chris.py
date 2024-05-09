@@ -143,7 +143,7 @@ def inferencing(model_file, queueOut):
     global inference_speed
     global power_consumption
 
-    cap = cv2.VideoCapture(8)
+    cap = cv2.VideoCapture(0)
     if cap.isOpened():
         ret = cap.read()[0]
         if ret:
@@ -247,7 +247,6 @@ if __name__ == '__main__':
     video_file = './video/video.mp4'
     model_file = './model/ei-object-detection-metatf-model.fbz'
 
-    queueIn  = Queue(maxsize = 24)
     queueOut = Queue(maxsize = 24)
 
     t2 = threading.Thread(target=inferencing, args=(model_file,queueOut))
