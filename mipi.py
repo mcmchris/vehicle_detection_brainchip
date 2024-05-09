@@ -162,16 +162,16 @@ def inferencing(model_file, queueOut):
     resize_dim = (EI_CLASSIFIER_INPUT_WIDTH, EI_CLASSIFIER_INPUT_HEIGHT)
 
     while True:
-        frame = picam2.capture_array("lores")
+        frame = picam2.capture_buffer("lores")
 
         #cropped_img = frame[0:720, 280:280+720]
         #resized_img = cv2.resize(frame, resize_dim, interpolation = cv2.INTER_AREA)
-        #grey = frame[:stride * lowresSize[1]].reshape((lowresSize[1], stride))
-        img = cv2.cvtColor(frame, cv2.COLOR_YUV420p2RGB)
+        grey = frame[:stride * lowresSize[1]].reshape((lowresSize[1], stride))
+        #img = cv2.cvtColor(frame, cv2.COLOR_YUV420p2RGB)
 
-        resized_img = cv2.resize(img, resize_dim)
+        #resized_img = cv2.resize(img, resize_dim)
         
-        input_data = np.expand_dims(resized_img, axis=0)
+        input_data = np.expand_dims(grey, axis=0)
         
         start_time = time.perf_counter()
         logits = akida_model.predict(input_data)
@@ -202,8 +202,6 @@ def inferencing(model_file, queueOut):
 
         
         
-        
-
 def gen_frames():
     #resize_stream = (640, 480)
     while True:
