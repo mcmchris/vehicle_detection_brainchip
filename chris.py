@@ -66,8 +66,8 @@ def ei_handle_cube(cubes, x, y, vf, label, detection_threshold):
         cube = {}
         cube['x'] = x
         cube['y'] = y
-        cube['width'] = 5
-        cube['height'] = 5
+        cube['width'] = 1
+        cube['height'] = 1
         cube['confidence'] = vf
         cube['label'] = label
         cubes.append(cube)
@@ -136,8 +136,8 @@ def inferencing(model_file, queueOut):
     o_h, o_w, o_c = akida_model.output_shape
     scale_x = int(i_w/o_w)
     scale_y = int(i_h/o_h)
-    scale_out_x = 480/EI_CLASSIFIER_INPUT_WIDTH
-    scale_out_y = 640/EI_CLASSIFIER_INPUT_HEIGHT
+    scale_out_x = 224/EI_CLASSIFIER_INPUT_WIDTH
+    scale_out_y = 224/EI_CLASSIFIER_INPUT_HEIGHT
 
     global inference_speed
     global power_consumption
@@ -180,8 +180,8 @@ def inferencing(model_file, queueOut):
             result = fill_result_struct_f32_fomo(pred, int(EI_CLASSIFIER_INPUT_WIDTH/8), int(EI_CLASSIFIER_INPUT_HEIGHT/8))
 
             for bb in result['bounding_boxes']:
-                img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] + int(bb['height']/2)) * scale_out_y)), 8, (57, 255, 20), 1)
-                img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] +  int(bb['height']/2)) * scale_out_y)), 4, (255, 165, 0), 1)
+                img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] + int(bb['height']/2)) * scale_out_y)), 8, (57, 255, 20), 2)
+                img = cv2.circle(img, (int((bb['x'] + int(bb['width']/2)) * scale_out_x), int((bb['y'] +  int(bb['height']/2)) * scale_out_y)), 4, (255, 165, 0), 2)
 
             img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
